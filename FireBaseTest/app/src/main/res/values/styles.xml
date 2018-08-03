@@ -1,0 +1,53 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item> <!--action bar color-->
+
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item><!--status bar color -->
+
+        <item name="colorAccent">@color/colorAccent</item><!-- edit text style -->
+
+        <item name="android:windowContentOverlay">@null</item>
+
+
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="android:textColorHint">#baffffff</item>
+        <item name="colorControlNormal">#baffffff</item>
+        <item name="colorControlActivated">#ffffff</item>
+        <item name="colorControlHighlight">@color/colorPrimaryDark</item>
+
+        <item name="android:textColorPrimary">#ffffff</item><!-- text color -->
+
+        <item name="android:textColorSecondary">#ff00</item> <!-- ?? -->
+    </style>
+
+    <style name="CustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/colorPrimary</item> <!--action bar color-->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item><!--status bar color -->
+        <item name="colorAccent">@color/colorAccent</item><!-- edit text style -->
+
+        <item name="android:textColorHint">#baffffff</item>
+        <item name="colorControlNormal">#baffffff</item>
+        <item name="colorControlActivated">#ffffff</item>
+        <item name="colorControlHighlight">@color/colorPrimaryDark</item>
+
+        <item name="android:textColorPrimary">#ffffff</item><!-- text color -->
+
+        <item name="android:textColorSecondary">#ff00</item> <!-- ?? -->
+
+    </style>
+
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>

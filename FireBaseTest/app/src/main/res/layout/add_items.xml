@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginEnd="16dp"
+    android:layout_marginStart="16dp"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editText_add_item_id"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Item id *"
+                android:inputType="text" />
+
+            <ImageButton
+                android:id="@+id/scan_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center"
+                android:src="@drawable/barcode" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/editText_add_brand_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Brand Name *"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/editText_add_item_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Item Price *"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/editText_add_item_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Quantity - Optional"
+            android:inputType="numberDecimal" />
+
+
+        <Button
+            android:id="@+id/button_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/other_button"
+            android:gravity="center"
+            android:text="Add Item"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</LinearLayout>

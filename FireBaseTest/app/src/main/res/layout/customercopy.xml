@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:layout_marginTop="20dp"
+            android:hint="customer name"
+            android:id="@+id/editText_customer_name" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:layout_marginTop="20dp"
+            android:hint="customer phone"
+            android:id="@+id/editText_customer_phone" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:layout_marginTop="20dp"
+            android:hint="selling price"
+            android:id="@+id/editText_selling_price" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:text="cancel"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/other_button"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/button_cancel" />
+
+            <Button
+                android:text="Sell"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/other_button"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/button_sell" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
