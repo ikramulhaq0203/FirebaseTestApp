@@ -1,7 +1,5 @@
 package firebasetest.ikram.com.firebasetest;
 
-import java.io.Serializable;
-
 import utils.UtilsClass;
 
 /**
@@ -9,7 +7,7 @@ import utils.UtilsClass;
  *
  * utility class
  */
-public class SoldStockDetails implements Serializable{
+public class SoldUtils {
 
     //14 items
 
@@ -23,22 +21,22 @@ public class SoldStockDetails implements Serializable{
     String customerAddress;
 
     String sellingDate;
-    long sellingOrderID;
-    double dueAmount;
+    String sellingOrderID;
+    String dueAmount;
 
     String key;
 
 
-    public SoldStockDetails() {
+    public SoldUtils() {
 
     }
 
-    public SoldStockDetails(String itemId, String price, String avalibleStatus) {
+    public SoldUtils(String itemId, String price, String avalibleStatus) {
         this.itemId = itemId;
         this.sellingPrice = price;
     }
 
-    public SoldStockDetails(long mOrderId, String itemId, String brandName, String price, String customerName, String customerPhone, String customerAddress, String key, double dues_amout) {//key ???
+    public SoldUtils(String mOrderId, String itemId, String brandName, String price, String customerName, String customerPhone, String customerAddress, String dues_amout) {//key ???
 
         this.itemId = itemId;
         this.brandName = brandName;
@@ -50,7 +48,6 @@ public class SoldStockDetails implements Serializable{
 
         this.sellingOrderID = mOrderId;
         this.sellingDate = UtilsClass.getCurrentTime();
-        this.key = key;
 
         this.dueAmount = dues_amout;
     }
@@ -60,16 +57,17 @@ public class SoldStockDetails implements Serializable{
         this.itemId = itemId;
     }
 
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
+    }
+
     public void setSellingPrice(String sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
 
+
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
-    }
-
-    public String getCustomerName() {
-        return customerName;
     }
 
     public void setCustomerPhone(String customerPhone) {
@@ -84,9 +82,14 @@ public class SoldStockDetails implements Serializable{
         this.sellingDate = sellingDate;
     }
 
-    public void setSellingOrderID(long sellingOrderID) {
+    public void setSellingOrderID(String sellingOrderID) {
         this.sellingOrderID = sellingOrderID;
     }
+
+    public void setDueAmout(String dues_amout) {
+        this.dueAmount = dues_amout;
+    }
+
 
     public String getitemId() {
         return itemId;
@@ -96,22 +99,25 @@ public class SoldStockDetails implements Serializable{
         return brandName;
     }
 
-    public String getCustomerPhone() {
-        return customerPhone;
-    }
-
     public String getSellingPrice() {
         return sellingPrice;
     }
 
-    public String getSoldItemKey() {
-        return key;
+
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setDueAmout(double dues_amout) {
-        this.dueAmount = dues_amout;
+    public String getCustomerPhone() {
+        return customerPhone;
     }
+
     public double getDueAmount() {
-        return dueAmount;
+        return Double.parseDouble(dueAmount);
+    }
+
+
+    public String getSoldItemKey() {
+        return key;
     }
 }

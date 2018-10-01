@@ -1,9 +1,16 @@
 package firebasetest.ikram.com.firebasetest;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -33,20 +41,34 @@ public class SellActivity extends AppCompatActivity implements View.OnClickListe
     EditText mCustomerName;
     EditText mCustomerPhone;
     EditText mCustomerAddress;
+    EditText mDuesAmount;
+
     ImageButton mScanButton;
     Button mSellButton;
     TextView mDescription;
 
-    TextView mDuesAmount;
+    TextInputLayout mItemId_layout;
+    TextInputLayout mSelleingPrice_layout;
+    TextInputLayout mCustomerName_layout;
+    TextInputLayout mCustomerPhone_layout;
+    TextInputLayout mCustomerAddress_layout;
+    TextInputLayout mDuesAmount_layout;
+
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 101;
+
 
     FirebaseDatabase mDatabase;
     DatabaseReference mUsersRef;
     FirebaseAuth mAuth;
 
-    StockList stock;
+    InStockList inStockList;
 
-    ArrayList<StockList> arrayList;
-    OrderDetails od;
+    ArrayList<InStockList> arrayList;
+    OrderDetails order_details;
+
+    Context mContext;
+
+    boolean isSellingPriceLessThanBuyingPrice = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +77,14 @@ public class SellActivity extends AppCompatActivity implements View.OnClickListe
 
         initializeUi();
 
-        arrayList = new ArrayList<StockList>();
+        arrayList = new ArrayList<InStockList>();
         mDatabase = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         mUsersRef = mDatabase.getReference(UtilsClass.USERS_TABLE_NAME).child(mAuth.getCurrentUser().getUid()); //get current user reference
 
         dataChangeListener();
+
+        mContext = this;
 
     }
 
@@ -71,7 +95,7 @@ public class SellActivity extends AppCompatActivity implements View.OnClickListe
             public void onDataChange(DataSnapshot dataSnapshot) {
                 arrayList.clear();
                 for (DataSnapshot datasnapshot : dataSnapshot.getChildren()) {
-                    arrayList.add(datasnapshot.getValue(StockList.class));
+                    updateData(datasnapshot);
                 }
             }
 
@@ -81,10 +105,10 @@ public class SellActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        mUsersRef.addValueEventListener(new ValueEventListener() {
+        mUsersRef.child(UtilsClass.BUYING_SELLING_ORDER_ID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                od = dataSnapshot.child(UtilsClass.BUYING_SELLING_ORDER_ID).getValue(OrderDetails.class);
+                order_details = dataSnapshot.getValue(OrderDetails.class); //need to be changed
             }
 
             @Override
@@ -92,6 +116,34 @@ public class SellActivity extends AppCompatActivity implements View.OnClickListe
                 Log.w("UserDEtails.java", "onCancelled", databaseError.toException());
             }
         });
+    }
+
+    private void updateData(DataSnapshot datasnapshot) {
+
+/*        String mItemId = (String) datasnapshot.child("itemId").getValue();
+        String mkey = datasnapshot.getKey();
+        String availableQuantity = (String)datasnapshot.child("availableQuantity").getValue();*/
+
+    /*    StockList stockList = new StockList(mItemId, mkey, availableQuantity);
+        arrayList.add(stockList);*/
+
+        String mItemId = (String)datasnapshot.child("itemId").getValue();
+        String brandName = (String)datasnapshot.child("brandName").getValue();
+        String buyingPrice = (String)datasnapshot.child("buyingPrice").getValue();
+
+        String buyingDate = (String)datasnapshot.child("buyingDate").getValue();
+        String buyingQuantity = (String)datasnapshot.child("buyingQuantity").getValue();
+        String buyingOrderID = (String)datasnapshot.child("buyingOrderID").getValue();
+
+        String availableQuantity = (String)datasnapshot.child("availableQuantity").getValue();
+        String avalibleStatus = (String)datasnapshot.child("avalibleStatus").getValue();
+        String mkey = (String)datasnapshot.getKey();
+
+        //String lastUpdateDate = (String)datasnapshot.child("lastUpdateDate").getValue();
+        //boolean isDelete = (String)datasnapshot.child("itemId").getValue();
+
+        inStockList = new InStockList(buyingOrderID, mItemId, brandName, buyingPrice, buyingQuantity, buyingDate, availableQuantity, UtilsClass.getCurrentTime(), mkey);
+        arrayList.add(inStockList);
     }
 
     private void initializeUi() {
@@ -108,14 +160,33 @@ public class SellActivity extends AppCompatActivity implements View.OnClickListe
         mScanButton = (ImageButton)findViewById(R.id.sell_scan_button);
         mScanButton.setOnClickListener(this);
         mSellButton.setOnClickListener(this);
+
+        mItemId_layout = (TextInputLayout) findViewById(R.id.editText_sell_item_id_layout);
+        mSelleingPrice_layout = (TextInputLayout) findViewById(R.id.editText_sell_item_price_layout);
+        mCustomerName_layout = (TextInputLayout) findViewById(R.id.editText_sell_customer_name_layout);
+        mCustomerPhone_layout = (TextInputLayout) findViewById(R.id.editText_sell_customer_phone_layout);
+        mCustomerAddress_layout = (TextInputLayout) findViewById(R.id.editText_sell_customer_address_layout);
+        mDuesAmount_layout = (TextInputLayout) findViewById(R.id.editText_sell_dues_amount_layout);
+
+        mItemId_layout.setHint("Item id *");
+        mSelleingPrice_layout.setHint("Selling Price *");
+        mCustomerName_layout.setHint("Customer Name *");
+        mCustomerPhone_layout.setHint("Customer phone *");
+        mCustomerAddress_layout.setHint("Customer address - Optional");
+        mDuesAmount_layout.setHint("Dues Amount - Optional");
+
+        String m_itemid = getIntent().getStringExtra("item_id");
+        if (m_itemid != null) {
+            mItemId.setText(m_itemid);
+        }
+
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.sell_scan_button:
-                Intent scanIntent = new Intent(this, ScannerActivity.class);
-                startActivityForResult(scanIntent, UtilsClass.SELL_ITEM_REQUEST_CODE);
+                checkCameraPermissions();
                 break;
 
             case R.id.button_sell:
@@ -128,10 +199,13 @@ public class SellActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 boolean isItemExist = false;
+                String sKey;
+
                 for (int i = 0; i<arrayList.size(); i++) {
-                    if(arrayList.get(i).itemId.equals(mItemId.getText().toString())) {
+                    if(arrayList.get(i).getItemId().equals(mItemId.getText().toString())) {
                         isItemExist = true;
-                        stock = arrayList.get(i);
+                        sKey = arrayList.get(i).getKey();
+                        inStockList = arrayList.get(i);
                     }
                 }
 
@@ -141,7 +215,7 @@ public class SellActivity extends AppCompatActivity implements View.OnClickListe
                     return;
                 }
 
-                if(!stock.getAvalibleStatus().equals("available")) {
+                if(Long.parseLong(inStockList.getAvailableQuantity()) <= 0) {
                     mDescription.setText("Item is not availble in stock");
                     mDescription.setTextColor(Color.RED);
                     return;
@@ -153,49 +227,72 @@ public class SellActivity extends AppCompatActivity implements View.OnClickListe
                     return;
                 }
 
-                if (stock.getAvailableQuantity() > 0) {
-                    if (stock.getAvailableQuantity() == 1) {
-                        stock.setAvalibleStatus("sold");
-                    }
+                if (Double.parseDouble(mSelleingPrice.getText().toString()) < Double.parseDouble(inStockList.getBuyingPrice())) {
 
-                    //long total_price = (Long.valueOf(stock.getPrice()) /stock.getquantity()) * (stock.getquantity() - 1) ;
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
-                    stock.setAvailableQuantity(stock.getAvailableQuantity() - 1);
-                    //stock.setPrice(String.valueOf(total_price));
+                    builder.setTitle("Warning!")
+                            .setMessage("Do you really want to sell this item less than buying price ?")
+                            .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(SellActivity.this, "Sold item successfully", Toast.LENGTH_SHORT).show();
+                                    isSellingPriceLessThanBuyingPrice = true;
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    isSellingPriceLessThanBuyingPrice = false;
+                                    Toast.makeText(SellActivity.this, "cancelled", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+
+                if(!isSellingPriceLessThanBuyingPrice) {
+                    return;
+                }
+
+                if (Long.parseLong(inStockList.getAvailableQuantity()) > 0) {
+                    inStockList.setAvailableQuantity(String.valueOf(Long.parseLong(inStockList.getAvailableQuantity()) - 1));
                     mDescription.setText("Congratulation!! successfully sold");
                     mDescription.setTextColor(Color.BLUE);
                 }
 
-                od.setSellingOrderID(od.getSellingOrderID() +1);  // crash observed
-                mUsersRef.child(UtilsClass.BUYING_SELLING_ORDER_ID).setValue(od);
+                order_details.setSellingOrderID(String.valueOf(Long.parseLong(order_details.getSellingOrderID()) +1));  // crash observed
+                mUsersRef.child(UtilsClass.BUYING_SELLING_ORDER_ID).setValue(order_details);
 
                 String customerAddress = "";
                 if (!mCustomerAddress.getText().toString().isEmpty()) {
                     customerAddress = mCustomerAddress.getText().toString();
                 }
 
-                double dues_amount = 0;
+                mUsersRef.child(UtilsClass.USERS_STOCKS).child(inStockList.getKey()).setValue(inStockList);//try to get complete stock tuples
 
+                String mDues = "0";
                 if (!mDuesAmount.getText().toString().isEmpty()) {
-                    dues_amount = Double.valueOf(mDuesAmount.getText().toString());
+                    mDues = mDuesAmount.getText().toString();
                 }
 
-
-                mUsersRef.child(UtilsClass.USERS_STOCKS).child(stock.getStockItemKey()).setValue(stock);
-
-                DatabaseReference mSoldStockRef = mUsersRef.child(UtilsClass.USERS_SOLD_STOCKS).push();
-
-                SoldStockDetails soldList = new SoldStockDetails(od.getSellingOrderID(), mItemId.getText().toString(),stock.getBrandName(),
+                OutStockList outStockList = new OutStockList(order_details.getSellingOrderID(), mItemId.getText().toString(), inStockList.getBrandName(),
                         mSelleingPrice.getText().toString(), mCustomerName.getText().toString(),mCustomerPhone.getText().toString(),
-                        customerAddress, mSoldStockRef.getKey(), dues_amount);
+                        customerAddress, UtilsClass.getCurrentTime(), UtilsClass.getCurrentTime(), mDues, "");
 
-                mSoldStockRef.setValue(soldList);
+                mUsersRef.child(UtilsClass.USERS_SOLD_STOCKS).push().setValue(outStockList);//.getKey();setValue(outStockList);
+                //mref.setValue(outStockList);
 
-                DatabaseReference mDueRef = mSoldStockRef.push();
-                mDueRef.child("lastUpdateDate").setValue(UtilsClass.getCurrentTime());
-                mDueRef.child("lastUpdateDueAmount").setValue(soldList.getDueAmount());
+                if (Double.parseDouble(mDues) > 0) {
+                    DuesUtilsClass duesUtilsClass = new DuesUtilsClass(order_details.getSellingOrderID(), mItemId.getText().toString(), inStockList.getBrandName(),
+                            mSelleingPrice.getText().toString(), mCustomerName.getText().toString(),mCustomerPhone.getText().toString(),
+                            customerAddress, UtilsClass.getCurrentTime(), UtilsClass.getCurrentTime(),
+                            String.valueOf(Double.parseDouble(mSelleingPrice.getText().toString()) - Double.parseDouble(mDues)),mDues, outStockList.getCustomerPhone());
 
-
+                    mUsersRef.child(UtilsClass.DUES_TABLE).child(outStockList.getItemId()).push().setValue(duesUtilsClass);
+                }
 
                 mItemId.setText(null);
                 mSelleingPrice.setText(null);
@@ -208,6 +305,32 @@ public class SellActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+    private void checkCameraPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.CAMERA) !=  PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
+            } else {
+                Intent scanIntent = new Intent(this, ScannerActivity.class);
+                startActivityForResult(scanIntent, UtilsClass.SELL_ITEM_REQUEST_CODE);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent scanIntent = new Intent(this, ScannerActivity.class);
+                startActivityForResult(scanIntent, UtilsClass.SELL_ITEM_REQUEST_CODE);
+            } else {
+                return;
+            }
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

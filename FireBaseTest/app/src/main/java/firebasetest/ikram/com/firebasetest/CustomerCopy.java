@@ -28,7 +28,7 @@ public class CustomerCopy extends AppCompatActivity implements View.OnClickListe
 
     Button cancel_button, sell_button;
 
-    StockList stock;
+    InStockList inStockList;
     FirebaseDatabase mDatabase;
     DatabaseReference muser_stock_ref;
     DatabaseReference muser_sold;
@@ -48,9 +48,9 @@ public class CustomerCopy extends AppCompatActivity implements View.OnClickListe
         mAuth = FirebaseAuth.getInstance();
 
         if (getIntent().getSerializableExtra("Myclass") != null) {
-            stock = (StockList)getIntent().getSerializableExtra("Myclass");
+            inStockList = (InStockList)getIntent().getSerializableExtra("Myclass");
         }
-        muser_stock_ref = mDatabase.getReference("user_list").child(mAuth.getCurrentUser().getUid()).child("STOCKS").child(stock.getStockItemKey());
+        muser_stock_ref = mDatabase.getReference("user_list").child(mAuth.getCurrentUser().getUid()).child("STOCKS").child(inStockList.getKey());
         muser_sold = mDatabase.getReference("user_list").child(mAuth.getCurrentUser().getUid());
 
         muser_sold_ref = mDatabase.getReference("user_list").child(mAuth.getCurrentUser().getUid());
@@ -78,11 +78,11 @@ public class CustomerCopy extends AppCompatActivity implements View.OnClickListe
             case R.id.button_sell:
                 Toast.makeText(this, "succesfully ", Toast.LENGTH_SHORT).show();
 
-                stock.setAvalibleStatus("SOLD");
-                muser_stock_ref.setValue(stock);
+                inStockList.setAvalibleStatus("SOLD");
+                muser_stock_ref.setValue(inStockList);
 
                 CustomerDetails customers_details = new CustomerDetails(customerName.getText().toString(), customerPhone.getText().toString(),"na",
-                        stock.getitemId(), "na", sellingPrice.getText().toString());
+                        inStockList.getItemId(), "na", sellingPrice.getText().toString());
 
                 DatabaseReference sold_db  = muser_sold.child("SOLD_STOCKS").push();
                 sold_db.setValue(customers_details);

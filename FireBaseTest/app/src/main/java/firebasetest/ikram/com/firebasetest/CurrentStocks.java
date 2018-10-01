@@ -1,8 +1,15 @@
 package firebasetest.ikram.com.firebasetest;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -28,7 +35,7 @@ public class CurrentStocks extends AppCompatActivity{
     FirebaseAuth mAuth;
     FirebaseDatabase mDatabase;
     DatabaseReference muserStockRef;
-    ArrayList<StockList> arrayList;
+    ArrayList<InStockList> arrayList;
     CurrentStockListAdapter availableStockListAdapter;
     ListView mlistview;
 
@@ -47,7 +54,7 @@ public class CurrentStocks extends AppCompatActivity{
         initializeUiElement();
 
         mAuth = FirebaseAuth.getInstance();
-        arrayList = new ArrayList<StockList>();
+        arrayList = new ArrayList<InStockList>();
 
 
         mDatabase = FirebaseDatabase.getInstance();
@@ -58,8 +65,8 @@ public class CurrentStocks extends AppCompatActivity{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 arrayList.clear();
                 for (DataSnapshot datasnapshot : dataSnapshot.getChildren()) {
-                    if (datasnapshot.getValue(StockList.class).getAvalibleStatus().equals("available")) {
-                        arrayList.add(datasnapshot.getValue(StockList.class));
+                    if (datasnapshot.getValue(InStockList.class).getAvalibleStatus().equals("available")) {
+                        arrayList.add(datasnapshot.getValue(InStockList.class));
                     }
                 }
                 availableStockListAdapter = new CurrentStockListAdapter(CurrentStocks.this, R.layout.available_stock, arrayList);
@@ -71,6 +78,8 @@ public class CurrentStocks extends AppCompatActivity{
 
             }
         });
+
+        registerForContextMenu(mlistview);
     }
 
     private void initializeUiElement() {
@@ -83,8 +92,45 @@ public class CurrentStocks extends AppCompatActivity{
     private void setTotalPrice() {
         double total_price = 0;
         for (int i = 0; i< arrayList.size(); i++) {
-            total_price =  total_price + (double)(Double.valueOf(arrayList.get(i).getBuyingPrice()) * arrayList.get(i).getAvailableQuantity());
+            total_price =  total_price + (double)(Double.valueOf(arrayList.get(i).getBuyingPrice()) * Long.parseLong(arrayList.get(i).getAvailableQuantity()));
         }
         total_price_current_stocks.setText("  Toatal Stock Value = "+total_price);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.context_menu_current_stock, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        //return super.onContextItemSelected(item);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.action_update:
+
+                Log.d("InTransaction.java", "" +"action_update");
+                Intent intent = new Intent(this, InTransactionUpdate.class);
+                intent.putExtra("Myclass", availableStockListAdapter.getItem(info.position));
+                startActivity(intent);
+                break;
+
+            case R.id.action_sell:
+
+                Log.d("InTransaction.java", "" +"action_sell");
+                Intent intent2 = new Intent(this, SellActivity.class);
+                intent2.putExtra("item_id", availableStockListAdapter.getItem(info.position).getItemId());
+                startActivity(intent2);
+                finish();
+                break;
+
+            default:
+                break;
+
+        }
+
+        return true;
     }
 }

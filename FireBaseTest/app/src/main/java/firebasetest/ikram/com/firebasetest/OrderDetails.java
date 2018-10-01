@@ -6,29 +6,30 @@ package firebasetest.ikram.com.firebasetest;
 
 public class OrderDetails {
 
-    long buyingOrderID;
-    long sellingOrderID;
+    String buyingOrderID;
+    String sellingOrderID;
 
-    public OrderDetails(){}
+    public OrderDetails() {
+    }
 
-    public OrderDetails(long buyingOrderID, long sellingOrderID) {
+    public OrderDetails(String buyingOrderID, String sellingOrderID) {
         this.buyingOrderID = buyingOrderID;
         this.sellingOrderID = sellingOrderID;
     }
 
-    public long getBuyingOrderID() {
+    public String getBuyingOrderID() {
         return buyingOrderID;
     }
 
-    public long getSellingOrderID() {
+    public String getSellingOrderID() {
         return sellingOrderID;
     }
 
-    public  void setBuyingOrderID(long buyingOrderID) {
+    public void setBuyingOrderID(String buyingOrderID) {
         this.buyingOrderID = buyingOrderID;
     }
 
-    public  void setSellingOrderID(long sellingOrderID) {
+    public void setSellingOrderID(String sellingOrderID) {
         this.sellingOrderID = sellingOrderID;
     }
 

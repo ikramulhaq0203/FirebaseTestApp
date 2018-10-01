@@ -1,9 +1,13 @@
 package firebasetest.ikram.com.firebasetest;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -42,13 +46,20 @@ public class AddItems extends AppCompatActivity implements View.OnClickListener 
     Button mAddButton;
     TextView mDescription;
 
+    TextInputLayout mItemId_layout;
+    TextInputLayout mBrandName_layout;
+    TextInputLayout mItemPrice_layout;
+    TextInputLayout mItemQuantity_layout;
+
 
     FirebaseDatabase mDatabase;
     DatabaseReference mUsersRef;
     FirebaseAuth mAuth;
 
-    ArrayList<StockList> arrayList;
+    ArrayList<InStockList> arrayList;
     OrderDetails order_details;
+
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 101;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +70,7 @@ public class AddItems extends AppCompatActivity implements View.OnClickListener 
 
         initializeUi();
 
-        arrayList = new ArrayList<StockList>();
+        arrayList = new ArrayList<InStockList>();
 
         mDatabase = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -80,6 +91,18 @@ public class AddItems extends AppCompatActivity implements View.OnClickListener 
 
         scanButton.setOnClickListener(this);
         mAddButton.setOnClickListener(this);
+
+        mItemId_layout = (TextInputLayout) findViewById(R.id.editText_add_item_id_layout);
+        mBrandName_layout = (TextInputLayout) findViewById(R.id.editText_add_brand_name_layout);
+        mItemPrice_layout = (TextInputLayout) findViewById(R.id.editText_add_item_price_layout);
+        mItemQuantity_layout = (TextInputLayout) findViewById(R.id.editText_add_item_quantity_layout);
+
+        mItemId_layout.setHint("Item id *");
+        mBrandName_layout.setHint("Brand Name *");
+        mItemPrice_layout.setHint("Item Price *");
+        mItemQuantity_layout.setHint("Quantity - Optional");
+        mItemQuantity_layout.setVisibility(View.GONE);
+
     }
 
 
@@ -90,7 +113,7 @@ public class AddItems extends AppCompatActivity implements View.OnClickListener 
             public void onDataChange(DataSnapshot dataSnapshot) {
                 arrayList.clear();
                 for (DataSnapshot datasnapshot : dataSnapshot.getChildren()) {
-                    arrayList.add(datasnapshot.getValue(StockList.class));
+                    arrayList.add(datasnapshot.getValue(InStockList.class)); //not proper...need to change
                 }
             }
 
@@ -100,10 +123,11 @@ public class AddItems extends AppCompatActivity implements View.OnClickListener 
             }
         });
 
-        mUsersRef.addValueEventListener(new ValueEventListener() {
+
+        mUsersRef.child(UtilsClass.BUYING_SELLING_ORDER_ID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                order_details = dataSnapshot.child(UtilsClass.BUYING_SELLING_ORDER_ID).getValue(OrderDetails.class);
+                order_details = dataSnapshot.getValue(OrderDetails.class); //not proper...need to change
             }
 
             @Override
@@ -138,20 +162,20 @@ public class AddItems extends AppCompatActivity implements View.OnClickListener 
                     return;
                 }
 
-                DatabaseReference mUserStockRef = mUsersRef.child(UtilsClass.USERS_STOCKS).push();
-
-                if (mItemQuantity.getText().toString().isEmpty()) {
+                if (mItemQuantity.getText().toString().isEmpty() || mItemQuantity.getVisibility() == View.GONE) {
                     count = 1;
                 } else {
                     count =  Integer.valueOf(mItemQuantity.getText().toString());
                 }
 
-                order_details.setBuyingOrderID(order_details.getBuyingOrderID()+1);
+                order_details.setBuyingOrderID(String.valueOf(Long.parseLong(order_details.getBuyingOrderID())+1));
                 mUsersRef.child(UtilsClass.BUYING_SELLING_ORDER_ID).setValue(order_details);
 
-                //int total_price = Integer.valueOf(mItemPrice.getText().toString());
-                StockList st = new StockList(order_details.getBuyingOrderID(), mItemId.getText().toString(), mBrandName.getText().toString(), mItemPrice.getText().toString() , count, mUserStockRef.getKey());
-                mUserStockRef.setValue(st);
+
+                InStockList inStockList = new InStockList(order_details.getBuyingOrderID(), mItemId.getText().toString(), mBrandName.getText().toString(),
+                        mItemPrice.getText().toString() , String.valueOf(count), UtilsClass.getCurrentTime(), String.valueOf(count), UtilsClass.getCurrentTime(),"");
+
+                mUsersRef.child(UtilsClass.USERS_STOCKS).push().setValue(inStockList);
 
                 mDescription.setText(count + " items added in stock");
                 mDescription.setTextColor(Color.BLUE);
@@ -164,12 +188,37 @@ public class AddItems extends AppCompatActivity implements View.OnClickListener 
                 break;
 
             case R.id.scan_button:
-                Intent scan_intent = new Intent(this, ScannerActivity.class);
-                startActivityForResult(scan_intent, UtilsClass.ADD_ITEM_REQUEST_CODE);
+                checkCameraPermissions();
                 break;
 
             default:
                 break;
+        }
+    }
+
+    private void checkCameraPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.CAMERA) !=  PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
+            } else {
+                Intent scan_intent = new Intent(this, ScannerActivity.class);
+                startActivityForResult(scan_intent, UtilsClass.ADD_ITEM_REQUEST_CODE);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent scan_intent = new Intent(this, ScannerActivity.class);
+                startActivityForResult(scan_intent, UtilsClass.ADD_ITEM_REQUEST_CODE);
+            } else {
+                return;
+            }
         }
     }
 

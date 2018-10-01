@@ -8,12 +8,11 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1000dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="10dp"
         android:orientation="vertical">
         <LinearLayout
@@ -21,13 +20,20 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/editText_sell_item_id"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editText_sell_item_id_layout"
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/editText_sell_item_id"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Item id *"
+                android:layout_weight="1"
                 android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>/
+
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,41 +42,69 @@
                 android:id="@+id/sell_scan_button"/>
         </LinearLayout>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/editText_sell_item_price"
-            android:hint="Price *"
-            android:inputType="numberDecimal"/>
 
-        <EditText
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/editText_sell_item_price_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="Customer Name *"
-            android:id="@+id/editText_sell_customer_name"/>
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:hint="Customer phone *"
-            android:id="@+id/editText_sell_customer_phone" />
+            <EditText
+                android:id="@+id/editText_sell_item_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal" />
+        </android.support.design.widget.TextInputLayout>
 
-        <EditText
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/editText_sell_customer_name_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="Customer address - Optional"
-            android:visibility="gone"
-            android:id="@+id/editText_sell_customer_address" />
+            android:layout_height="wrap_content">
 
-        <EditText
+            <EditText
+                android:id="@+id/editText_sell_customer_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/editText_sell_customer_phone_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/editText_sell_customer_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/editText_sell_customer_address_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="Dues Amount - Optional"
-            android:id="@+id/editText_sell_dues_amount" />
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/editText_sell_customer_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:visibility="gone"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/editText_sell_dues_amount_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/editText_sell_dues_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal" />
+        </android.support.design.widget.TextInputLayout>
 
 
         <Button

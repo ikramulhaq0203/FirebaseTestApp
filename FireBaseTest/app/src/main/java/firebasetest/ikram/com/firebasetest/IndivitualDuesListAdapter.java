@@ -13,12 +13,12 @@ import java.util.ArrayList;
 /**
  * Created by lenovo on 26-03-2018.
  */
-public class DuesListAdapter extends ArrayAdapter<DuesUtilsClass> {
+public class IndivitualDuesListAdapter extends ArrayAdapter<DuesUtilsClass> {
     LayoutInflater inflator;
     ArrayList<DuesUtilsClass> duesUtilsClass;
 
 
-    public DuesListAdapter(Context mcontext, int row, ArrayList<DuesUtilsClass> arrayList) {
+    public IndivitualDuesListAdapter(Context mcontext, int row, ArrayList<DuesUtilsClass> arrayList) {
         super(mcontext, 0, arrayList);
         inflator = (LayoutInflater)mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         duesUtilsClass = arrayList;
@@ -31,14 +31,14 @@ public class DuesListAdapter extends ArrayAdapter<DuesUtilsClass> {
 
         View view = convertView;
         if (view == null) {
-            view = inflator.inflate(R.layout.dues_row, parent, false);
+            view = inflator.inflate(R.layout.indivitual_dues_row, parent, false);
         }
-        TextView list_customer_phone = (TextView)view.findViewById(R.id.list_customer_phone);
-        TextView list_customer_name = (TextView)view.findViewById(R.id.list_customer_name);
+        TextView list_payment_date = (TextView)view.findViewById(R.id.list_payment_date);
+        TextView list_payment_amount = (TextView)view.findViewById(R.id.list_payment_amount);
         TextView list_due_amount = (TextView)view.findViewById(R.id.list_due_amount);
 
-        list_customer_phone.setText(duesUtilsClass.get(position).getCustomerPhone());
-        list_customer_name.setText(duesUtilsClass.get(position).getCustomerName());
+        list_payment_date.setText(duesUtilsClass.get(position).getLastUpdate().substring(0, 10));
+        list_payment_amount.setText(duesUtilsClass.get(position).getPaidAmount());
         list_due_amount.setText(duesUtilsClass.get(position).getDueAmount());
         return view;
     }

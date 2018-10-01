@@ -17,28 +17,35 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:orientation="vertical">
 
-        <EditText
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/editTextSignEmail_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:hint="Enter Email"
-            android:layout_marginTop="10dp"
-            android:id="@+id/editTextSignEmail" />
+            android:layout_height="wrap_content">
 
-        <EditText
+            <EditText
+                android:id="@+id/editTextSignEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/editTextSignPassword_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="Enter Password"
-            android:inputType="textPassword"
-            android:id="@+id/editTextSignPassword" />
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/editTextSignPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
+        </android.support.design.widget.TextInputLayout>
 
         <Button
             android:text="SIGN IN"
@@ -51,7 +58,7 @@
 
             <Button
                 android:text="JOIN NOW"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/custombutton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

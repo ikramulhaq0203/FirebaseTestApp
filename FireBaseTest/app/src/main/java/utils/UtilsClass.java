@@ -20,6 +20,7 @@ public class UtilsClass {
     public static final String USERS_STOCKS = "user_stock";
     public static final String USERS_SOLD_STOCKS = "user_sold_stock";
     public static final String BUYING_SELLING_ORDER_ID = "user_orders";
+    public static final String DUES_TABLE = "dues_table";
 
 
     public static String getCurrentTime() {

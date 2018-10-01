@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +31,17 @@ import utils.UtilsClass;
 
 public class RegistrationUser extends AppCompatActivity implements View.OnClickListener {
 
-    EditText mEditTextEmail, mEditTextPassword;
+    EditText mEditTextFirstName;
+    EditText mEditTextLastName;
+    EditText mEditTextEmail;
+    EditText mEditTextPassword;
+
+
+    TextInputLayout mEditTextFirstName_layout;
+    TextInputLayout mEditTextLastName_layout;
+    TextInputLayout mEditTextEmail_layout;
+    TextInputLayout mEditTextPassword_layout;
+
     Button mJoinNowButton;
 
     FirebaseAuth mAuth;
@@ -52,9 +63,22 @@ public class RegistrationUser extends AppCompatActivity implements View.OnClickL
 
     private void initializeUIElement() {
 
-        mEditTextEmail = (EditText)findViewById(R.id.editTextEmail);
+        mEditTextFirstName = (EditText) findViewById(R.id.editTextFirstName);
+        mEditTextLastName = (EditText)findViewById(R.id.editTextLastName);
+        mEditTextEmail = (EditText) findViewById(R.id.editTextEmail);
         mEditTextPassword = (EditText)findViewById(R.id.editTextPassword);
         mJoinNowButton = (Button) findViewById(R.id.signupButton);
+
+        mEditTextFirstName_layout = (TextInputLayout) findViewById(R.id.editTextFirstName_layout);
+        mEditTextLastName_layout = (TextInputLayout) findViewById(R.id.editTextLastName_layout);
+        mEditTextEmail_layout = (TextInputLayout) findViewById(R.id.editTextEmail_layout);
+        mEditTextPassword_layout = (TextInputLayout) findViewById(R.id.editTextPassword_layout);
+
+        mEditTextFirstName_layout.setHint("First Name");
+        mEditTextLastName_layout.setHint("Last Name");
+        mEditTextEmail_layout.setHint("Email");
+        mEditTextPassword_layout.setHint("Password");
+
         mJoinNowButton.setOnClickListener(this);
     }
 
@@ -89,7 +113,7 @@ public class RegistrationUser extends AppCompatActivity implements View.OnClickL
                         NewUser userDetails = new NewUser(email, password);
                         DatabaseReference newUserDetails = mUsersList.child(uid).child(UtilsClass.USERS_DETAILS);
                         DatabaseReference mCurrentUserOrderRef = mUsersList.child(uid).child(UtilsClass.BUYING_SELLING_ORDER_ID);
-                        mCurrentUserOrderRef.setValue(new OrderDetails(UtilsClass.BUYING_ORDER_ID, UtilsClass.SELLIGN_ORDER_ID));
+                        mCurrentUserOrderRef.setValue(new OrderDetails(String.valueOf(UtilsClass.BUYING_ORDER_ID), String.valueOf(UtilsClass.SELLIGN_ORDER_ID)));
                         newUserDetails.setValue(userDetails);
 
                         Intent intent = new Intent(RegistrationUser.this, UserDetails.class);

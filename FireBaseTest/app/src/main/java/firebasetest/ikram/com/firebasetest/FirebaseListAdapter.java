@@ -15,13 +15,13 @@ import java.util.ArrayList;
  *
  * utility class
  */
-class FirebaseListAdapterCustom extends ArrayAdapter<StockList>{
+class FirebaseListAdapterCustom extends ArrayAdapter<InStockList>{
 
     LayoutInflater inflator;
-    ArrayList<StockList> stockList;
+    ArrayList<InStockList> stockList;
 
 
-    public FirebaseListAdapterCustom(Context mcontext, int row, ArrayList<StockList> arrayList) {
+    public FirebaseListAdapterCustom(Context mcontext, int row, ArrayList<InStockList> arrayList) {
         super(mcontext, 0, arrayList);
         inflator = (LayoutInflater)mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         stockList = arrayList;
@@ -40,7 +40,7 @@ class FirebaseListAdapterCustom extends ArrayAdapter<StockList>{
         TextView list_item_price = (TextView)view.findViewById(R.id.list_item_price);
         TextView list_item_purchase_date = (TextView)view.findViewById(R.id.list_item_prchase_date);
 
-        list_item_id.setText(stockList.get(position).getitemId());
+        list_item_id.setText(stockList.get(position).getItemId());
         list_item_brancd.setText(stockList.get(position).getBrandName());
         list_item_price.setText(""+stockList.get(position).getBuyingPrice()+" X "+stockList.get(position).getBuyingQuantity());
         list_item_purchase_date.setText(stockList.get(position).getBuyingDate().substring(0, 10));

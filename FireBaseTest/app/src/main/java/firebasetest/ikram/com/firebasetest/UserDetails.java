@@ -1,6 +1,7 @@
 package firebasetest.ikram.com.firebasetest;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -69,19 +70,22 @@ public class UserDetails extends AppCompatActivity implements AdapterView.OnItem
 
         initializeUiElement();
 
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            mGridView.setNumColumns(4);
+        } else if (this.getResources().getConfiguration().orientation  == Configuration.ORIENTATION_PORTRAIT) {
+            mGridView.setNumColumns(2);
+        }
+
         mGridAraylist = new ArrayList<>();
         for (int i = 0; i < grid_data.length; i++) {
             mGridAraylist.add(grid_data[i]);
         }
         mlistAdapter = new CustomListAdapter(this, R.layout.mlist_row, mGridAraylist);
-        mGridView = (GridView) findViewById(R.id.list_item);
         mGridView.setAdapter(mlistAdapter);
         mGridView.setOnItemClickListener(this);
 
-
         mCurrentUserRef = mDatabase.getReference(UtilsClass.USERS_TABLE_NAME).child(mAuth.getCurrentUser().getUid());
 
-        //mCurrentUserOrderRef.setValue(new OrderDetails(UtilsClass.BUYING_ORDER_ID, UtilsClass.SELLIGN_ORDER_ID));
         dataChangeListener();
     }
 
@@ -91,7 +95,7 @@ public class UserDetails extends AppCompatActivity implements AdapterView.OnItem
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get StockList object and use the values to update the UI
-                StockList st_list = dataSnapshot.getValue(StockList.class);
+                InStockList inStockList = dataSnapshot.getValue(InStockList.class);
             }
 
             @Override
@@ -101,9 +105,21 @@ public class UserDetails extends AppCompatActivity implements AdapterView.OnItem
         });
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            mGridView.setNumColumns(4);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            mGridView.setNumColumns(2);
+        }
+    }
+
     private void initializeUiElement() {
 
         welcomeMessage = (TextView)findViewById(R.id.welcome_message);
+        mGridView = (GridView) findViewById(R.id.list_item);
+
         welcomeMessage.setVisibility(View.VISIBLE);
         welcomeMessage.setText("Welcome "+mAuth.getCurrentUser().getEmail());
     }
@@ -160,7 +176,7 @@ public class UserDetails extends AppCompatActivity implements AdapterView.OnItem
                     break;
 
                 case 3:
-                    Intent intent3 = new Intent(UserDetails.this, SoldStock.class);
+                    Intent intent3 = new Intent(UserDetails.this, OutTransaction.class);
                     startActivity(intent3);
                     break;
 

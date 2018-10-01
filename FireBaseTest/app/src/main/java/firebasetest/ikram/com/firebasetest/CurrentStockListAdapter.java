@@ -15,13 +15,13 @@ import java.util.ArrayList;
  *
  * utility class
  */
-public class CurrentStockListAdapter extends ArrayAdapter<StockList>{
+public class CurrentStockListAdapter extends ArrayAdapter<InStockList>{
 
     LayoutInflater inflator;
-    ArrayList<StockList> availablStockList;
+    ArrayList<InStockList> availablStockList;
 
 
-    public CurrentStockListAdapter(Context mcontext, int row, ArrayList<StockList> arrayList) {
+    public CurrentStockListAdapter(Context mcontext, int row, ArrayList<InStockList> arrayList) {
         super(mcontext, 0, arrayList);
         inflator = (LayoutInflater)mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         availablStockList = arrayList;
@@ -42,14 +42,15 @@ public class CurrentStockListAdapter extends ArrayAdapter<StockList>{
         TextView list_item_quantity = (TextView)view.findViewById(R.id.list_item_quantity);
 
         long current_price = 0;
-        if (availablStockList.get(position).getBuyingQuantity() > 0) {
-            current_price = (Integer.valueOf(availablStockList.get(position).getBuyingPrice()) / availablStockList.get(position).getBuyingQuantity()) * availablStockList.get(position).getAvailableQuantity();
+        if (Long.parseLong(availablStockList.get(position).getBuyingQuantity()) > 0) {
+            current_price = (Integer.valueOf(availablStockList.get(position).getBuyingPrice()) /
+                    Long.parseLong(availablStockList.get(position).getBuyingQuantity())) * Long.parseLong(availablStockList.get(position).getAvailableQuantity());
         }
 
-        list_item_id.setText(availablStockList.get(position).getitemId());
+        list_item_id.setText(availablStockList.get(position).getItemId());
         list_item_brand.setText(availablStockList.get(position).getBrandName());
         list_item_price.setText(String.valueOf(current_price));
-        list_item_quantity.setText(String.valueOf(availablStockList.get(position).getBuyingPrice() +" X " +availablStockList.get(position).getAvailableQuantity()));
+        list_item_quantity.setText(String.valueOf(availablStockList.get(position).getBuyingPrice()));
         return view;
     }
 }

@@ -29,6 +29,7 @@
             android:theme="@style/CustomTheme"/>
 
         <activity android:label="Inventry Management"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:name=".UserDetails"/>
 
         <activity android:label="Add Stock"
@@ -41,7 +42,7 @@
             android:name=".InTransaction"/>
 
         <activity android:label="Out Transaction Details"
-            android:name=".SoldStock"/>
+            android:name=".OutTransaction"/>
 
         <activity android:label="Current Stocks"
             android:name=".CurrentStocks"/>
@@ -52,14 +53,17 @@
         <activity android:label="ScannerActivity"
             android:name=".ScannerActivity"/>
 
-
-
-
         <activity android:label="Modify Stock"
-            android:name=".StockUpdate"/>
+            android:name=".InTransactionUpdate"/>
 
         <activity android:label="Customer Copy"
             android:name=".CustomerCopy"/>
+
+        <activity android:label="Update Sold Stock"
+            android:name=".OutTransactionUpdate"/>
+
+        <activity android:label="Dues Show Activity"
+            android:name=".DuesShowActivity"/>
 
     </application>
 

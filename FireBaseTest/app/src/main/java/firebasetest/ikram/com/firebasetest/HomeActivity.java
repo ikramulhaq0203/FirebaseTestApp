@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +33,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     FirebaseAuth mAuth;
 
+    TextInputLayout mSigninEmail_layout;
+    TextInputLayout mSigninPassword_layout;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +58,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         signInButton.setOnClickListener(this);
         signUpButton.setOnClickListener(this);
 
+        mSigninEmail_layout = (TextInputLayout) findViewById(R.id.editTextSignEmail_layout);
+        mSigninPassword_layout = (TextInputLayout) findViewById(R.id.editTextSignPassword_layout);
+
+        mSigninEmail_layout.setHint("Email");
+        mSigninPassword_layout.setHint("Password");
     }
 
     @Override

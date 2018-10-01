@@ -39,7 +39,7 @@ import static android.widget.AdapterView.*;
 public class InTransaction extends AppCompatActivity {
 
     ListView mlistview;
-    ArrayList<StockList> arrayList;
+    ArrayList<InStockList> arrayList;
     FirebaseListAdapterCustom customAdapter;
 
     FirebaseDatabase mDatabase;
@@ -59,7 +59,7 @@ public class InTransaction extends AppCompatActivity {
         initializeUiElement();
 
         mAuth = FirebaseAuth.getInstance();
-        arrayList = new ArrayList<StockList>();
+        arrayList = new ArrayList<InStockList>();
 
 
         mDatabase = FirebaseDatabase.getInstance();
@@ -70,7 +70,8 @@ public class InTransaction extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 arrayList.clear();
                 for (DataSnapshot datasnapshot : dataSnapshot.getChildren()) {
-                    arrayList.add(datasnapshot.getValue(StockList.class));
+                    //arrayList.add(datasnapshot.getValue(InStockList.class));
+                    updateData(datasnapshot);
                 }
 
                 customAdapter = new FirebaseListAdapterCustom(InTransaction.this, R.layout.row, arrayList);
@@ -82,7 +83,30 @@ public class InTransaction extends AppCompatActivity {
 
             }
         });
-       // registerForContextMenu(mlistview);
+       registerForContextMenu(mlistview);
+
+    }
+
+    InStockList inStockList;
+    private void updateData(DataSnapshot datasnapshot) {
+
+        String itemId = (String)datasnapshot.child("itemId").getValue();
+        String brandName = (String)datasnapshot.child("brandName").getValue();
+        String buyingPrice = (String)datasnapshot.child("buyingPrice").getValue();
+
+        String buyingDate = (String)datasnapshot.child("buyingDate").getValue();
+        String buyingQuantity = (String)datasnapshot.child("buyingQuantity").getValue();
+        String buyingOrderID = (String)datasnapshot.child("buyingOrderID").getValue();
+
+        String availableQuantity = (String)datasnapshot.child("availableQuantity").getValue();
+        String avalibleStatus = (String)datasnapshot.child("avalibleStatus").getValue();
+        String key = (String)datasnapshot.getKey();
+
+        //String lastUpdateDate = (String)datasnapshot.child("lastUpdateDate").getValue();
+        //boolean isDelete = (String)datasnapshot.child("itemId").getValue();
+
+        inStockList = new InStockList(buyingOrderID, itemId, brandName, buyingPrice, buyingQuantity, buyingDate, availableQuantity, UtilsClass.getCurrentTime(), key);
+        arrayList.add(inStockList);
 
     }
 
@@ -94,46 +118,36 @@ public class InTransaction extends AppCompatActivity {
     private void setTotalPrice() {
         double total_price = 0;
         for (int i = 0; i< arrayList.size(); i++) {
-            total_price =  total_price + (double)(Double.valueOf(arrayList.get(i).getBuyingPrice()) * arrayList.get(i).getBuyingQuantity());
+            total_price =  total_price + (double)(Double.valueOf(arrayList.get(i).getBuyingPrice()) * Long.parseLong(arrayList.get(i).getBuyingQuantity()));
         }
         total_price_intransaction.setText("  In Transaction Value = "+total_price);
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        /*super.onCreateContextMenu(menu, v, menuInfo);
+        super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater menuInflater = getMenuInflater();
-       menuInflater.inflate(R.menu.context_menu, menu);*/
+       menuInflater.inflate(R.menu.context_menu_intransaction, menu);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-/*
         //return super.onContextItemSelected(item);
         AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
         switch (item.getItemId()) {
             case R.id.action_update:
 
-
-                Intent intent = new Intent(this, StockUpdate.class);
+                Log.d("InTransaction.java", "" +"action_update");
+                Intent intent = new Intent(this, InTransactionUpdate.class);
                 intent.putExtra("Myclass", customAdapter.getItem(info.position));
                 startActivity(intent);
-                Log.d("show_onCont", "" +info.position);
-
-                break;
-            case R.id.action_delete:
-                Log.d("show_onCont", "" +info.position);
-                DatabaseReference mRef = muserStockRef.child(customAdapter.getItem(info.position).getStockItemKey());
-                mRef.removeValue();
-
                 break;
 
-            case R.id.action_sell:
+            case R.id.action_details:
                 Log.d("show_onCont", "" +info.position);
+                //DatabaseReference mRef = muserStockRef.child(customAdapter.getItem(info.position).getStockItemKey());
+                //mRef.removeValue();
 
-                Intent intent2 = new Intent(this, CustomerCopy.class);
-                intent2.putExtra("Myclass", customAdapter.getItem(info.position));
-                startActivity(intent2);
                 break;
 
             default:
@@ -141,7 +155,6 @@ public class InTransaction extends AppCompatActivity {
 
         }
 
-*/
         return true;
     }
 }

@@ -13,12 +13,12 @@ import java.util.ArrayList;
 /**
  * Created by lenovo on 26-03-2018.
  */
-public class SoldStockListAdapter extends ArrayAdapter<SoldStockDetails> {
+public class SoldStockListAdapter extends ArrayAdapter<OutStockList> {
     LayoutInflater inflator;
-    ArrayList<SoldStockDetails> soldStockList;
+    ArrayList<OutStockList> soldStockList;
 
 
-    public SoldStockListAdapter(Context mcontext, int row, ArrayList<SoldStockDetails> arrayList) {
+    public SoldStockListAdapter(Context mcontext, int row, ArrayList<OutStockList> arrayList) {
         super(mcontext, 0, arrayList);
         inflator = (LayoutInflater)mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         soldStockList = arrayList;
@@ -38,7 +38,7 @@ public class SoldStockListAdapter extends ArrayAdapter<SoldStockDetails> {
         TextView list_item_price = (TextView)view.findViewById(R.id.list_item_price);
         TextView list_item_phone = (TextView)view.findViewById(R.id.list_item_phone);
 
-        list_item_id.setText(soldStockList.get(position).getitemId());
+        list_item_id.setText(soldStockList.get(position).getItemId());
         list_item_brand.setText(soldStockList.get(position).getBrandName());
         list_item_price.setText(soldStockList.get(position).getSellingPrice());
         list_item_phone.setText(String.valueOf(soldStockList.get(position).getCustomerPhone()));
