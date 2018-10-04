@@ -1,18 +1,23 @@
 package firebasetest.ikram.com.firebasetest;
 
 
+import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 
 import utils.UtilsClass;
 
@@ -36,7 +43,7 @@ import static android.widget.AdapterView.*;
  * ShowStockList -> CustomerCopy , sell stock
  */
 
-public class InTransaction extends AppCompatActivity {
+public class InTransaction extends AppCompatActivity implements PeriodsEditDialogFragment.PeriodsEditDialogFragmentInterfaceListener{
 
     ListView mlistview;
     ArrayList<InStockList> arrayList;
@@ -123,6 +130,37 @@ public class InTransaction extends AppCompatActivity {
         total_price_intransaction.setText("  In Transaction Value = "+total_price);
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.intransaction_option_menu, menu);
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_select_date:
+
+                break;
+            case R.id.action_select_periods:
+                listItemsforduration();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void listItemsforduration() {
+        DialogFragment dialogFrament = new PeriodsEditDialogFragment();
+        dialogFrament.show(getFragmentManager(), "PeriodsEditDialogFragment");
+    }
+
+
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -147,7 +185,17 @@ public class InTransaction extends AppCompatActivity {
                 Log.d("show_onCont", "" +info.position);
                 //DatabaseReference mRef = muserStockRef.child(customAdapter.getItem(info.position).getStockItemKey());
                 //mRef.removeValue();
+                //sample code
+/*                Collections.sort(arrayList);
 
+                String time = "2018/09/06 23:59:59";
+                for (int i = 0; i < arrayList.size(); i++) {
+                    if (time.compareTo(arrayList.get(i).getBuyingDate()) < 0) {
+                        arrayList.remove(i);
+                        i--;
+                    }
+                }
+                customAdapter.notifyDataSetChanged();*/
                 break;
 
             default:
@@ -156,5 +204,16 @@ public class InTransaction extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, String start_date, String end_date) {
+        Toast.makeText(this, "start = "+start_date +" end = "+end_date ,Toast.LENGTH_SHORT).show();
+        dialog.dismiss();
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        dialog.dismiss();
     }
 }

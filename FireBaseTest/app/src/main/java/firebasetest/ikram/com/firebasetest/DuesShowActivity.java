@@ -135,9 +135,9 @@ public class DuesShowActivity extends AppCompatActivity implements View.OnClickL
         if (Double.parseDouble(payment) > 0) {
             DuesUtilsClass dummy = arrayList.get(arrayList.size()-1);
             DuesUtilsClass duesUtilsClass = new DuesUtilsClass(dummy.getSellingOrderID(), dummy.getItemId(), dummy.getBrandName(),
-                    dummy.getSellingPrice(), dummy.getBrandName(), dummy.getCustomerPhone(),
+                    dummy.getSellingPrice(), dummy.getCustomerName(), dummy.getCustomerPhone(),
                     dummy.getCustomerAddress(), UtilsClass.getCurrentTime(), UtilsClass.getCurrentTime(),
-                    payment, String.valueOf(Double.parseDouble(dummy.getDueAmount()) - Double.parseDouble(payment)), dummy.getCustomerPhone());
+                    payment, String.valueOf(Double.parseDouble(dummy.getDueAmount()) - Double.parseDouble(payment)), dummy.getItemId());
 
             mDuesUserRef.child(res).push().setValue(duesUtilsClass);
         }

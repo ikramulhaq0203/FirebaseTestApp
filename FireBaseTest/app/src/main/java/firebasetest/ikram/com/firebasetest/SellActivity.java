@@ -289,7 +289,7 @@ public class SellActivity extends AppCompatActivity implements View.OnClickListe
                     DuesUtilsClass duesUtilsClass = new DuesUtilsClass(order_details.getSellingOrderID(), mItemId.getText().toString(), inStockList.getBrandName(),
                             mSelleingPrice.getText().toString(), mCustomerName.getText().toString(),mCustomerPhone.getText().toString(),
                             customerAddress, UtilsClass.getCurrentTime(), UtilsClass.getCurrentTime(),
-                            String.valueOf(Double.parseDouble(mSelleingPrice.getText().toString()) - Double.parseDouble(mDues)),mDues, outStockList.getCustomerPhone());
+                            String.valueOf(Double.parseDouble(mSelleingPrice.getText().toString()) - Double.parseDouble(mDues)),mDues, outStockList.getItemId());
 
                     mUsersRef.child(UtilsClass.DUES_TABLE).child(outStockList.getItemId()).push().setValue(duesUtilsClass);
                 }

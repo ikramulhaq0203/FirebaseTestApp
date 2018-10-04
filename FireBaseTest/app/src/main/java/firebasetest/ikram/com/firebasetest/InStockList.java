@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -15,7 +16,7 @@ import utils.UtilsClass;
  *
  * utility class
  */
-public class InStockList implements Serializable{
+public class InStockList implements Serializable, Comparable<InStockList> {
 
     String itemId;
     String brandName;
@@ -138,5 +139,12 @@ public class InStockList implements Serializable{
 
     public void setLastUpdateDate(String lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
+    }
+
+
+    //listing asscending order by date of creation
+    @Override
+    public int compareTo(InStockList another) {
+        return this.getBuyingDate().compareTo(another.getBuyingDate());
     }
 }
