@@ -1,100 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="32dp"
         android:background="@color/colorAccent"
-        android:visibility="visible"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="visible">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.7"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:layout_gravity="center_vertical"
-            android:gravity="start"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:scrollHorizontally="true"
             android:id="@+id/column1"
-            android:text="Item ID"/>
-        <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
             android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:maxLines="1"
+            android:paddingEnd="4dp"
+            android:paddingStart="4dp"
+            android:layout_weight="1.7"
             android:ellipsize="end"
-            android:scrollHorizontally="true"
-            android:id="@+id/column2"
-            android:text="Brand"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:textStyle="bold"
+            android:gravity="start"
             android:maxLines="1"
-            android:ellipsize="end"
             android:scrollHorizontally="true"
-            android:layout_gravity="center_vertical"
-            android:gravity="end"
+            android:text="Item id"
             android:textColor="@android:color/white"
-            android:id="@+id/column3"
-            android:text="Price"/>
+            android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/column2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:textStyle="bold"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:visibility="gone"
-            android:scrollHorizontally="true"
             android:layout_gravity="center_vertical"
-            android:gravity="end"
+            android:paddingEnd="4dp"
+            android:paddingStart="4dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            android:text="Brand"
             android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/column3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingEnd="4dp"
+            android:paddingStart="4dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            android:text="Price"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/column4"
-            android:text="Quantity"/>
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingEnd="4dp"
+            android:paddingStart="4dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            android:text="Quantity"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:visibility="gone" />
     </LinearLayout>
 
     <ListView
+        android:id="@+id/list_item"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/list_item">
-    </ListView>
+        android:visibility="gone"></ListView>
 
     <LinearLayout
+        android:id="@+id/no_item_layout"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:background="@color/colorPrimary"
-        android:layout_gravity="bottom">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
         <TextView
+            android:id="@+id/empty_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
+            android:layout_gravity="center"
+            android:text="Empty"
+            android:visibility="gone" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/total_transaction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:textStyle="bold"
+            android:textColor="@android:color/white"
             android:textSize="20dp"
-            android:id="@+id/total_price_current_stocks"/>
+            android:textStyle="bold" />
     </LinearLayout>
 
 </LinearLayout>

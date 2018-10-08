@@ -36,12 +36,12 @@ public class SoldStockListAdapter extends ArrayAdapter<OutStockList> {
         TextView list_item_id = (TextView)view.findViewById(R.id.list_item_id);
         TextView list_item_brand = (TextView)view.findViewById(R.id.list_item_brand);
         TextView list_item_price = (TextView)view.findViewById(R.id.list_item_price);
-        TextView list_item_phone = (TextView)view.findViewById(R.id.list_item_phone);
+        TextView list_item_selling_date = (TextView)view.findViewById(R.id.list_item_selling_date);
 
         list_item_id.setText(soldStockList.get(position).getItemId());
         list_item_brand.setText(soldStockList.get(position).getBrandName());
         list_item_price.setText(soldStockList.get(position).getSellingPrice());
-        list_item_phone.setText(String.valueOf(soldStockList.get(position).getCustomerPhone()));
+        list_item_selling_date.setText(String.valueOf(soldStockList.get(position).getSellingDate().substring(0, 10)));
         return view;
     }
 }

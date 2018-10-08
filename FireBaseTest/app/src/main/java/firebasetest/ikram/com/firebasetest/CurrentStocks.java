@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,6 +24,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import utils.UtilsClass;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 /**
  * Created by lenovo on 10-07-2017.
@@ -38,10 +42,13 @@ public class CurrentStocks extends AppCompatActivity{
     ArrayList<InStockList> arrayList;
     CurrentStockListAdapter availableStockListAdapter;
     ListView mlistview;
+    LinearLayout bottom_layout;
+    LinearLayout no_item_layout;
+    TextView empty_text;
 
     TextView mcolumn1, mcolumn2, mcolumn3;
 
-    TextView total_price_current_stocks;
+    TextView total_transaction;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,7 +72,7 @@ public class CurrentStocks extends AppCompatActivity{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 arrayList.clear();
                 for (DataSnapshot datasnapshot : dataSnapshot.getChildren()) {
-                    if (datasnapshot.getValue(InStockList.class).getAvalibleStatus().equals("available")) {
+                    if (Long.parseLong(datasnapshot.getValue(InStockList.class).getAvailableQuantity()) > 0) {
                         arrayList.add(datasnapshot.getValue(InStockList.class));
                     }
                 }
@@ -84,7 +91,10 @@ public class CurrentStocks extends AppCompatActivity{
 
     private void initializeUiElement() {
         mlistview = (ListView)findViewById(R.id.list_item);
-        total_price_current_stocks = (TextView)findViewById(R.id.total_price_current_stocks);
+        total_transaction = (TextView)findViewById(R.id.total_transaction);
+        bottom_layout = (LinearLayout)findViewById(R.id.bottom_layout);
+        no_item_layout = (LinearLayout) findViewById(R.id.no_item_layout);
+        empty_text = (TextView) findViewById(R.id.empty_text);
     }
 
 
@@ -94,7 +104,18 @@ public class CurrentStocks extends AppCompatActivity{
         for (int i = 0; i< arrayList.size(); i++) {
             total_price =  total_price + (double)(Double.valueOf(arrayList.get(i).getBuyingPrice()) * Long.parseLong(arrayList.get(i).getAvailableQuantity()));
         }
-        total_price_current_stocks.setText("  Toatal Stock Value = "+total_price);
+        if (arrayList.size() != 0) {
+            mlistview.setVisibility(VISIBLE);
+            bottom_layout.setVisibility(VISIBLE);
+            no_item_layout.setVisibility(GONE);
+            empty_text.setVisibility(GONE);
+            total_transaction.setText(" Total Value = "+total_price);
+        } else {
+            mlistview.setVisibility(GONE);
+            bottom_layout.setVisibility(GONE);
+            no_item_layout.setVisibility(VISIBLE);
+            empty_text.setVisibility(VISIBLE);
+        }
     }
 
     @Override

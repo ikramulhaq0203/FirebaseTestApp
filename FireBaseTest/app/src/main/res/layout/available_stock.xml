@@ -1,56 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="48dp">
+    android:layout_height="48dp"
+    android:orientation="horizontal">
 
     <TextView
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
+        android:id="@+id/list_item_id"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
         android:layout_weight="1.7"
-        android:layout_gravity="center"
-        android:gravity="start"
-        android:id="@+id/list_item_id"/>
+        android:gravity="start" />
 
     <TextView
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
+        android:id="@+id/list_item_brand"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:id="@+id/list_item_brand"/>
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
+        android:layout_weight="1" />
 
     <TextView
+        android:id="@+id/list_item_price"
         android:layout_width="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:maxLines="1"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
+        android:layout_weight="1"
         android:ellipsize="end"
-        android:visibility="gone"
+        android:gravity="center"
+        android:maxLines="1"
         android:scrollHorizontally="true"
-        android:id="@+id/list_item_price"/>
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <TextView
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
+        android:id="@+id/list_item_quantity"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_gravity="center"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
+        android:layout_weight="1"
+        android:ellipsize="end"
         android:gravity="end"
-        android:textStyle="bold"
         android:maxLines="1"
-        android:ellipsize="end"
         android:scrollHorizontally="true"
-        android:id="@+id/list_item_quantity"/>
+        android:textStyle="bold" />
 
 </LinearLayout>

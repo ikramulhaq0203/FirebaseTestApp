@@ -42,7 +42,7 @@ class FirebaseListAdapterCustom extends ArrayAdapter<InStockList>{
 
         list_item_id.setText(stockList.get(position).getItemId());
         list_item_brancd.setText(stockList.get(position).getBrandName());
-        list_item_price.setText(""+stockList.get(position).getBuyingPrice()+" X "+stockList.get(position).getBuyingQuantity());
+        list_item_price.setText(""+stockList.get(position).getBuyingPrice());
         list_item_purchase_date.setText(stockList.get(position).getBuyingDate().substring(0, 10));
         return view;
     }

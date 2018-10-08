@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,8 +53,12 @@ public class InTransaction extends AppCompatActivity implements PeriodsEditDialo
     FirebaseDatabase mDatabase;
     DatabaseReference muserStockRef;
     FirebaseAuth mAuth;
-    TextView total_price_intransaction;
+    TextView total_transaction;
+    LinearLayout bottom_layout;
+    LinearLayout no_item_layout;
+    TextView empty_text;
 
+    double total_price = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,17 +124,11 @@ public class InTransaction extends AppCompatActivity implements PeriodsEditDialo
 
     private void initializeUiElement() {
         mlistview = (ListView)findViewById(R.id.list_item);
-        total_price_intransaction = (TextView)findViewById(R.id.total_price_intransaction);
+        total_transaction = (TextView)findViewById(R.id.total_transaction);
+        bottom_layout = (LinearLayout)findViewById(R.id.bottom_layout);
+        no_item_layout = (LinearLayout) findViewById(R.id.no_item_layout);
+        empty_text = (TextView) findViewById(R.id.empty_text);
     }
-
-    private void setTotalPrice() {
-        double total_price = 0;
-        for (int i = 0; i< arrayList.size(); i++) {
-            total_price =  total_price + (double)(Double.valueOf(arrayList.get(i).getBuyingPrice()) * Long.parseLong(arrayList.get(i).getBuyingQuantity()));
-        }
-        total_price_intransaction.setText("  In Transaction Value = "+total_price);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -144,7 +143,7 @@ public class InTransaction extends AppCompatActivity implements PeriodsEditDialo
 
         switch (item.getItemId()) {
             case R.id.action_select_date:
-
+                getTimeFromCalander();
                 break;
             case R.id.action_select_periods:
                 listItemsforduration();
@@ -154,18 +153,11 @@ public class InTransaction extends AppCompatActivity implements PeriodsEditDialo
         return super.onOptionsItemSelected(item);
     }
 
-    private void listItemsforduration() {
-        DialogFragment dialogFrament = new PeriodsEditDialogFragment();
-        dialogFrament.show(getFragmentManager(), "PeriodsEditDialogFragment");
-    }
-
-
-
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater menuInflater = getMenuInflater();
-       menuInflater.inflate(R.menu.context_menu_intransaction, menu);
+        menuInflater.inflate(R.menu.context_menu_intransaction, menu);
     }
 
     @Override
@@ -185,7 +177,6 @@ public class InTransaction extends AppCompatActivity implements PeriodsEditDialo
                 Log.d("show_onCont", "" +info.position);
                 //DatabaseReference mRef = muserStockRef.child(customAdapter.getItem(info.position).getStockItemKey());
                 //mRef.removeValue();
-                //sample code
 /*                Collections.sort(arrayList);
 
                 String time = "2018/09/06 23:59:59";
@@ -206,14 +197,104 @@ public class InTransaction extends AppCompatActivity implements PeriodsEditDialo
         return true;
     }
 
+    private void listItemsforduration() {
+        DialogFragment dialogFrament = new PeriodsEditDialogFragment();
+        dialogFrament.show(getFragmentManager(), "PeriodsEditDialogFragment");
+    }
+
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, String start_date, String end_date) {
         Toast.makeText(this, "start = "+start_date +" end = "+end_date ,Toast.LENGTH_SHORT).show();
         dialog.dismiss();
+        String mStartDate = start_date +" 00:00:00";
+        String mEndDate = end_date + " 23:59:59";
+        dateSortingFunction(mStartDate, mEndDate);
     }
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
         dialog.dismiss();
+    }
+
+    private void setTotalPrice() {
+        for (int i = 0; i< arrayList.size(); i++) {
+            total_price =  total_price + (double)(Double.valueOf(arrayList.get(i).getBuyingPrice()) * Long.parseLong(arrayList.get(i).getBuyingQuantity()));
+        }
+        if (arrayList.size() != 0) {
+            mlistview.setVisibility(VISIBLE);
+            bottom_layout.setVisibility(VISIBLE);
+            no_item_layout.setVisibility(GONE);
+            empty_text.setVisibility(GONE);
+            total_transaction.setText(" Total Value = "+total_price);
+        } else {
+            mlistview.setVisibility(GONE);
+            bottom_layout.setVisibility(GONE);
+            no_item_layout.setVisibility(VISIBLE);
+            empty_text.setVisibility(VISIBLE);
+        }
+    }
+
+
+    private void dateSortingFunction(String mStartDate, String mEndDate) {
+        total_price = 0;
+        int item = 0;
+
+        for (int i = 0; i < arrayList.size(); i++) {
+            if ((mStartDate.compareTo(arrayList.get(i).getBuyingDate()) <= 0 && mEndDate.compareTo(arrayList.get(i).getBuyingDate()) >= 0)) {
+                total_price =  total_price + (double)(Double.valueOf(arrayList.get(i).getBuyingPrice()) * Long.parseLong(arrayList.get(i).getBuyingQuantity()));
+                item++;
+            } else {
+                arrayList.remove(i);
+                i--;
+            }
+        }
+        customAdapter.notifyDataSetChanged();
+        if (item != 0) {
+            mlistview.setVisibility(VISIBLE);
+            bottom_layout.setVisibility(VISIBLE);
+            no_item_layout.setVisibility(GONE);
+            empty_text.setVisibility(GONE);
+            total_transaction.setText("  Total Value = "+total_price);
+        } else {
+            mlistview.setVisibility(GONE);
+            bottom_layout.setVisibility(GONE);
+            no_item_layout.setVisibility(VISIBLE);
+            empty_text.setVisibility(VISIBLE);
+        }
+    }
+
+    private void getTimeFromCalander() {
+
+        final Calendar calendar = Calendar.getInstance();
+        int yy = calendar.get(Calendar.YEAR);
+        int mm = calendar.get(Calendar.MONTH);
+        int dd = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                String day_format;
+                String month_format;
+                if (dayOfMonth < 10) {
+                    day_format = "0" + String.valueOf(dayOfMonth);
+                } else {
+                    day_format = String.valueOf(dayOfMonth);
+                }
+
+                if (monthOfYear < 9) {
+                    month_format = "0" + String.valueOf(monthOfYear+1);
+                } else {
+                    month_format = String.valueOf(monthOfYear+1);
+                }
+
+                final String date = String.valueOf(year) + "/" + month_format
+                        + "/" + day_format;
+
+                String mStartDate = date +" 00:00:00";
+                String mEndDate = date + " 23:59:59";
+                dateSortingFunction(mStartDate, mEndDate);
+            }
+        }, yy, mm, dd);
+        datePicker.show();
     }
 }

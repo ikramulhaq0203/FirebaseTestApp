@@ -9,7 +9,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:hint="Start Date"
+        android:focusableInTouchMode="false"
         android:inputType="datetime"
+
         android:id="@+id/start_date"/>
 
     <EditText
@@ -17,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:hint="End Date"
+        android:focusableInTouchMode="false"
         android:inputType="datetime"
         android:id="@+id/end_date"/>
 

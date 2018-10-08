@@ -1,55 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="48dp">
+    android:layout_height="48dp"
+    android:orientation="horizontal">
 
     <TextView
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
+        android:id="@+id/list_item_id"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.5"
         android:layout_gravity="center"
+        android:layout_weight="1.5"
         android:gravity="start"
-        android:id="@+id/list_item_id"/>
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp" />
 
     <TextView
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
+        android:id="@+id/list_item_brand"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:id="@+id/list_item_brand"/>
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:layout_weight="1"/>
 
     <TextView
+        android:id="@+id/list_item_price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:textStyle="bold"
-        android:maxLines="1"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:layout_weight="1"
         android:ellipsize="end"
+        android:maxLines="1"
         android:scrollHorizontally="true"
-        android:id="@+id/list_item_price"/>
+        android:textStyle="bold" />
 
     <TextView
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
+        android:id="@+id/list_item_selling_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
         android:layout_weight="1.5"
-        android:layout_gravity="center"
-        android:gravity="end"
-        android:textStyle="bold"
-        android:maxLines="1"
         android:ellipsize="end"
+        android:gravity="end"
+        android:maxLines="1"
         android:scrollHorizontally="true"
-        android:id="@+id/list_item_phone"/>
+        android:textStyle="bold" />
 
 </LinearLayout>

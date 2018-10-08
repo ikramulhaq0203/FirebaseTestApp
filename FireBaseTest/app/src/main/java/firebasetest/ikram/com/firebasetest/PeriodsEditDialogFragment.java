@@ -88,8 +88,22 @@ public class PeriodsEditDialogFragment extends DialogFragment implements View.On
         DatePickerDialog datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                final String date = String.valueOf(year) + "/" + String.valueOf(monthOfYear+1)
-                        + "/" + String.valueOf(dayOfMonth);
+                String day_format;
+                String month_format;
+                if (dayOfMonth < 10) {
+                    day_format = "0" + String.valueOf(dayOfMonth);
+                } else {
+                    day_format = String.valueOf(dayOfMonth);
+                }
+
+                if (monthOfYear < 9) {
+                    month_format = "0" + String.valueOf(monthOfYear+1);
+                } else {
+                    month_format = String.valueOf(monthOfYear+1);
+                }
+
+                final String date = String.valueOf(year) + "/" + month_format
+                        + "/" + day_format;
                 editText.setText(date);
             }
         }, yy, mm, dd);
