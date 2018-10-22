@@ -1,0 +1,574 @@
+....................STring.......................
+
+Que1 : String constant pool and heap memory concept
+https://www.youtube.com/watch?v=UKG1xgh_tbQ 
+
+String s1 = new String("abc"); --> how many obejct create 
+String s2 = new String("abc"); --> how many total object now
+String s3 = "abc";
+String s4 = "bcd";
+String s5 = "abc";
+
+s1 == s2 ? // false
+s1 == s3 ?  //false
+s3 == s5 ?  //true
+
+Que2 :  String vs StringBuilder vs StringBuffer in Java
+
+StringBuffer -> threadsafe 
+StringBuilder -> not thread safe
+String -> immutable
+
+// Java program to demonstrate difference between String, 
+// StringBuilder and StringBuffer 
+class Geeksforgeeks 
+{ 
+	// Concatenates to String 
+	public static void concat1(String s1) 
+	{ 
+		s1 = s1 + "forgeeks"; 
+	} 
+
+	// Concatenates to StringBuilder 
+	public static void concat2(StringBuilder s2) 
+	{ 
+		s2.append("forgeeks"); 
+	} 
+
+	// Concatenates to StringBuffer 
+	public static void concat3(StringBuffer s3) 
+	{ 
+		s3.append("forgeeks"); 
+	} 
+
+	public static void main(String[] args) 
+	{ 
+		String s1 = "Geeks"; 
+		concat1(s1); // s1 is not changed 
+		System.out.println("String: " + s1); 
+
+		StringBuilder s2 = new StringBuilder("Geeks"); 
+		concat2(s2); // s2 is changed 
+		System.out.println("StringBuilder: " + s2); 
+
+		StringBuffer s3 = new StringBuffer("Geeks"); 
+		concat3(s3); // s3 is changed 
+		System.out.println("StringBuffer: " + s3); 
+	} 
+} 
+
+Ans ;
+
+When to use which one :
+
+String : If a string is going to remain constant throughout the program, then use String class object because a String object is immutable.
+
+StringBuilder : If a string can change (example: lots of logic and operations in the construction of the string) and will only be accessed from a single thread, 
+using a StringBuilder is good enough.
+
+StringBuffer : If a string can change, and will be accessed from multiple threads, use a StringBuffer because StringBuffer is synchronous 
+so you have thread-safety.
+
+Que3 : toString()
+
+	StringBuffer sbr = new StringBuffer("Geeks"); 
+    String str = sbr.toString(); 
+	System.out.println(str.hashCode()+" == "+sbr.hashCode()); 
+
+Ans : both are different
+
+Que4 :string to int and int to string
+
+   String.valueof(123);
+   Integer.parseInt("123")
+
+
+....................OOP'S concept......................
+
+Que1 : How are Java objects stored in memory?
+
+In Java, all objects are dynamically allocated on Heap.
+
+In Java, when we only declare a variable of a class type, only a reference is created (memory is not allocated for the object). 
+To allocate memory to an object, we must use new(). So the object is always allocated memory on heap (See this for more details).
+
+
+
+class Test { 
+  
+// class contents 
+void show() 
+{ 
+    System.out.println("Test::show() called"); 
+} 
+} 
+  
+public class Main { 
+  
+        // Driver Code 
+    public static void main(String[] args)  
+    { 
+        Test t;  
+          
+        // Error here because t  
+        // is not initialzed 
+        t.show();  
+    } 
+} 
+
+Que2 : Inheritance, interfcae, Encapsulation and Abstraction in java
+
+Note : 
+Inheritance : It is the mechanism in java by which one class is allow to inherit the features(fields and methods) of another class.
+
+Encapsulation :  
+
+Encapsulation is defined as the wrapping up of data under a single unit. It is the mechanism that binds together code and the data 
+it manipulates.Other way to think about encapsulation is, it is a protective shield that prevents the data from being accessed 
+by the code outside this shield.
+Technically in encapsulation, the variables or data of a class is hidden from any other class and can be accessed only through 
+any member function of own class in which they are declared.
+As in encapsulation, the data in a class is hidden from other classes, so it is also known as data-hiding.
+Encapsulation can be achieved by: Declaring all the variables in the class as private and writing public methods in the class to 
+set and get the values of variables.
+
+Abstraction :
+
+Data Abstraction is the property by virtue of which only the essential details are displayed to the user.The trivial or the 
+non-essentials units are not displayed to the user. Ex: A car is viewed as a car rather than its individual components.
+Data Abstraction may also be defined as the process of identifying only the required characteristics of an object ignoring the 
+irrelevant details.The properties and behaviors of an object differentiate it from other objects of similar type and also help in 
+classifying/grouping the objects.
+Consider a real-life example of a man driving a car. The man only knows that pressing the accelerators will increase the speed of car 
+or applying brakes will stop the car but he does not know about how on pressing the accelerator the speed is actually increasing, he 
+does not know about the inner mechanism of the car or the implementation of accelerator, brakes etc in the car. 
+This is what abstraction is.
+In java, abstraction is achieved by interfaces and abstract classes. We can achieve 100% abstraction using interfaces.
+
+
+***Que3 : Why multiple inheritance not supported in java
+
+Que4 : When to use abstract classes and abstract methods with an example
+
+There are situations in which we will want to define a superclass that declares the structure of a given abstraction without providing 
+a complete implementation of every method. That is, sometimes we will want to create a superclass that only defines a generalization 
+form that will be shared by all of its subclasses, leaving it to each subclass to fill in the details.
+
+Que5: Encapsulation vs Data Abstraction
+
+Encapsulation is data hiding(information hiding) while Abstraction is detail hiding(implementation hiding).
+While encapsulation groups together data and methods that act upon the data, data abstraction deals with exposing the interface to 
+the user and hiding the details of implementation.
+
+Que6 :Runtime Polymorphism in java 
+
+When an overridden method is called through a superclass reference, Java determines which version(superclass/subclasses) of that 
+method is to be executed based upon the type of the object being referred to at the time the call occurs. Thus, this determination 
+is made at run time.
+
+
+// A Java program to illustrate Dynamic Method 
+// Dispatch using hierarchical inheritance 
+class A 
+{ 
+    void m1() 
+    { 
+        System.out.println("Inside A's m1 method"); 
+    } 
+} 
+  
+class B extends A 
+{ 
+    // overriding m1() 
+    void m1() 
+    { 
+        System.out.println("Inside B's m1 method"); 
+    } 
+} 
+  
+class C extends A 
+{ 
+    // overriding m1() 
+    void m1() 
+    { 
+        System.out.println("Inside C's m1 method"); 
+    } 
+} 
+  
+// Driver class 
+class Dispatch 
+{ 
+    public static void main(String args[]) 
+    { 
+        // object of type A 
+        A a = new A(); 
+  
+        // object of type B 
+        B b = new B(); 
+  
+        // object of type C 
+        C c = new C(); 
+  
+        // obtain a reference of type A 
+        A ref; 
+          
+        // ref refers to an A object 
+        ref = a; 
+  
+        // calling A's version of m1() 
+        ref.m1(); 
+  
+        // now ref refers to a B object 
+        ref = b; 
+  
+        // calling B's version of m1() 
+        ref.m1(); 
+  
+        // now ref refers to a C object 
+        ref = c; 
+  
+        // calling C's version of m1() 
+        ref.m1(); 
+    } 
+}
+
+Output :
+
+Inside A's m1 method
+Inside B's m1 method
+Inside C's m1 method
+
+***Que7 : Runtime Polymorphism with Data Members
+
+Not allowed
+
+In Java, we can override methods only, not the variables(data members), so runtime polymorphism cannot be achieved by data members. For example :
+
+// Java program to illustrate the fact that 
+// runtime polymorphism cannot be achieved 
+// by data members 
+  
+// class A 
+class A 
+{ 
+    int x = 10; 
+} 
+  
+// class B 
+class B extends A 
+{ 
+    int x = 20; 
+} 
+  
+// Driver class 
+public class Test 
+{ 
+    public static void main(String args[]) 
+    { 
+        A a = new B(); // object of type B 
+  
+        // Data member of class A will be accessed 
+        System.out.println(a.x); 
+    } 
+} 
+
+Output :
+10
+Explanation : In above program, both the class A(super class) and B(sub class) have a common variable ‘x’. Now we make object of 
+class B, referred by ‘a’ which is of type of class A. Since variables are not overridden, so the statement “a.x” will always refer 
+to data member of super class.
+
+***Que8 : Static vs Dynamic binding
+
+1. Static binding is done during compile-time while dynamic binding is done during run-time.
+2. private, final and static methods and variables uses static binding and bonded by compiler while overridden methods are bonded 
+during runtime based upon type of runtime object
+
+Que9 : access modifiers java
+
+https://www.geeksforgeeks.org/access-modifiers-java/
+
+Que10 : this reference java 
+
+‘this’ is a reference variable that refers to the current object.
+
+Que11 : Overloading in Java
+
+Note1 :Can we overload static methods?
+Note2 : Can we overload main() in Java?
+Note3 : Can we overload methods on return type? 
+
+Que12 : Overriding in Java
+
+Note : Rules for method overriding:
+https://www.geeksforgeeks.org/overriding-in-java/ 
+
+Que13 : Understanding “static” in “public static void main” in Java
+
+***Que14 :Can we Override static methods in java?
+
+Following are some important points for method overriding and static methods in Java.
+1) For class (or static) methods, the method according to the type of reference is called, not according to the object being referred, 
+which means method call is decided at compile time.
+
+2) For instance (or non-static) methods, the method is called according to the type of object being referred, not according to the type 
+of reference, which means method calls is decided at run time.
+
+3) An instance method cannot override a static method, and a static method cannot hide an instance method. For example, the following 
+program has two compiler errors.
+
+Que15 :  Instance method vs Static method
+
+Instance method can access the instance methods and instance variables directly.
+Instance method can access static variables and static methods directly.
+Static methods can access the static variables and static methods directly.
+Static methods can’t access instance methods and instance variables directly. They must use reference to object. 
+And static method can’t use this keyword as there is no instance for ‘this’ to refer to.
+
+Que16 : Assigning values to static final variables in Java
+
+Assigning values to static final variables in Java:
+In Java, non-static final variables can be assigned a value either in constructor or with the declaration. 
+But, static final variables cannot be assigned value in constructor; they must be assigned a value with their declaration.
+
+class Test { 
+  final int i;  // i could be assigned a value here or constructor or init block also. 
+  Tets() { 
+    i = 10; 
+  } 
+  
+  //other stuff in the class 
+} 
+
+class Test { 
+  static final int i   // Since i is static final, it must be assigned value here or inside static block .  
+  static{ 
+           i=10;    
+} 
+  
+  //other stuff in the class 
+} 
+
+Que17 :Instance Variable Hiding in Java
+
+In Java, if there is a local variable in a method with same name as instance variable, then the local variable hides the instance variable. If we want to reflect the change made over to the instance variable, this can be achieved with the help of this reference.
+
+class Test 
+{ 
+    // Instance variable or member variable 
+    private int value = 10;  
+  
+    void method() 
+    { 
+        // This local variable hides instance variable 
+        int value = 40; 
+  
+        System.out.println("Value of Instance variable :"
+                            + this.value); 
+        System.out.println("Value of Local variable :"
+                            + value); 
+    } 
+} 
+  
+class UseTest 
+{ 
+    public static void main(String args[]) 
+    { 
+        Test obj1 = new Test(); 
+        obj1.method(); 
+    } 
+} 
+
+Que18 : Static blocks in Java
+
+Unlike C++, Java supports a special block, called static block (also called static clause) which can be used for static 
+initializations of a class. This code inside static block is executed only once: the first time you make an object of that 
+class or the first time you access a static member of that class (even if you never make an object of that class). 
+For example, check output of following Java program.
+
+// filename: Main.java 
+class Test { 
+    static int i; 
+    int j; 
+      
+    // start of static block  
+    static { 
+        i = 10; 
+        System.out.println("static block called "); 
+    } 
+    // end of static block  
+} 
+  
+class Main { 
+    public static void main(String args[]) { 
+  
+        // Although we don't have an object of Test, static block is  
+        // called because i is being accessed in following statement. 
+        System.out.println(Test.i);  
+    } 
+} 
+
+Que19 :The Initializer Block in Java
+
+Initializer block contains the code that is always executed whenever an instance is created. It is used to declare/initialize the
+common part of various constructors of a class. For example,
+
+import java.io.*; 
+public class GFG 
+{ 
+    // Initializer block starts.. 
+    { 
+        // This code is executed before every constructor. 
+        System.out.println("Common part of constructors invoked !!"); 
+    } 
+    // Initializer block ends 
+  
+    public GFG() 
+    { 
+        System.out.println("Default Constructor invoked"); 
+    } 
+    public GFG(int x) 
+    { 
+        System.out.println("Parametrized constructor invoked"); 
+    } 
+    public static void main(String arr[]) 
+    { 
+        GFG obj1, obj2; 
+        obj1 = new GFG(); 
+        obj2 = new GFG(0); 
+    } 
+}
+
+Output:
+
+Common part of constructors invoked!!
+Default Constructor invoked
+Common part of constructors invoked!!
+Parametrized constructor invoked 
+
+Note:  Instance Initialization Block with parent class
+
+You can have IIBs in parent class also. Instance initialization block code runs immediately after the call to super() in a constructor. The compiler executes parents class’s IIB before executing current class’s IIBs. Have a look on following example.
+
+// Java program to illustrate 
+// Instance Initialization Block 
+// with super() 
+  
+// Parent Class 
+class B 
+{ 
+    B() 
+    { 
+        System.out.println("B-Constructor Called"); 
+    } 
+  
+    { 
+        System.out.println("B-IIB block"); 
+    } 
+  
+} 
+  
+// Child class 
+class A extends B 
+{ 
+    A() 
+    { 
+        super(); 
+        System.out.println("A-Constructor Called"); 
+    } 
+    { 
+        System.out.println("A-IIB block"); 
+    } 
+      
+    // main function 
+    public static void main(String[] args) 
+    { 
+        A a = new A(); 
+    } 
+} 
+
+Output :
+
+B-IIB block
+B-Constructor Called
+A-IIB block
+A-Constructor Called
+
+Important points:
+
+Instance Initialization Blocks run every time a new instance is created.
+Initialization Blocks run in the order they appear in the program
+The Instance Initialization Block is invoked after the parent class constructor is invoked (i.e. after super() constructor call)
+ 
+Que20 : Static vs Dynamic Binding in Java
+
+https://www.geeksforgeeks.org/static-vs-dynamic-binding-in-java/
+
+***Que21 :static class in java
+https://www.geeksforgeeks.org/static-class-in-java/
+
+***Que22 : Object class in java , toString() and hashcode()
+https://www.geeksforgeeks.org/object-class-in-java/
+
+Que23 : Covariant return types in Java
+
+....................Threads ............
+
+Que1 : Multithreading in Java
+Multithreading is a Java feature that allows concurrent execution of two or more parts of a program for maximum utilization of CPU. 
+Each part of such program is called a thread. So, threads are light-weight processes within a process.
+
+Threads can be created by using two mechanisms :
+1. Extending the Thread class
+2. Implementing the Runnable Interface
+
+Que2 : Lifecycle and States of a Thread in Java
+
+*** Que3 : Java Concurrency – yield(), sleep() and join(), wait(), notify() and notifyall() methods
+
+***Que4 What does start() function do in multithreading in Java?
+
+***Que5 Synchronized in Java 
+Note 1: Method and Block Synchronization in Java
+Note2 : Need of Synchronization
+
+***Que6: Demon thread in java
+***Que7: Executorservice , callable and future
+
+..................Garbage collection in java ..............
+Que1 : Garbage collection ?
+
+In C/C++, programmer is responsible for both creation and destruction of objects. Usually programmer neglects destruction of 
+useless objects. Due to this negligence, at certain point, for creation of new objects, sufficient memory may not be available 
+and entire program will terminate abnormally causing OutOfMemoryErrors.
+But in Java, the programmer need not to care for all those objects which are no longer in use. Garbage collector destroys these objects.
+Garbage collector is best example of Daemon thread as it is always running in background.
+***Main objective of Garbage Collector is to free heap memory by destroying unreachable objects. 
+
+Important terms :
+1. Unreachable objects : An object is said to be unreachable iff it doesn’t contain any reference to it. 
+Also note that objects which are part of island of isolation are also unreachable. 
+
+Integer i = new Integer(4);
+// the new Integer object is reachable  via the reference in 'i' 
+i = null;
+// the Integer object is no longer reachable. 
+
+Que2 : Ways to make an object eligible for GC
+
+Nullifying the reference variable
+Re-assigning the reference variable
+Object created inside method
+Island of Isolation
+
+Que3: Ways for requesting JVM to run Garbage Collector
+
+Using System.gc() method : System class contain static method gc() for requesting JVM to run Garbage Collector.
+Using Runtime.getRuntime().gc() method : Runtime class allows the application to interface with the JVM in which the 
+application is running. Hence by using its gc() method, we can request JVM to run Garbage Collector.
+
+There is no guarantee that any one of above two methods will definitely run Garbage Collector.
+The call System.gc() is effectively equivalent to the call : Runtime.getRuntime().gc()
+
+Que4 : final finally and finalize
+
